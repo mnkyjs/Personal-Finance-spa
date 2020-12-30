@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { AlertService } from "../../services/alert.service";
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
           });
           returnUrl = returnUrl.substring(0, returnUrl.indexOf('?'));
         }
-        this._alert.success('Angemeldet!')
+        this._alert.success('Angemeldet!');
         this.router.navigate([returnUrl], { queryParams });
       });
     });

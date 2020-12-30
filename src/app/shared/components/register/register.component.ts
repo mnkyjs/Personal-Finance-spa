@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { AlertService } from "../../services/alert.service";
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-register',
@@ -18,8 +18,7 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private _alert: AlertService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({

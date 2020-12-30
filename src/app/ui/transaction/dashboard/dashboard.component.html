@@ -1,9 +1,14 @@
 <div class="dashboard__wrapper">
   <div class="dashboard__items">
     <mat-card class="example-card">
-      <div *ngIf="this.dbTransactions?.length > 0 && this.categories?.length > 0">
-        <app-chart [transactions]="this.dbTransactions" [transactionType]="transactionTypes.Income"
-                   [categories]="this.categories"></app-chart>
+      <div
+        *ngIf="this.dbTransactions?.length > 0 && this.categories?.length > 0"
+      >
+        <app-chart
+          [transactions]="this.dbTransactions"
+          [transactionType]="transactionTypes.Income"
+          [categories]="this.categories"
+        ></app-chart>
       </div>
     </mat-card>
   </div>
@@ -14,20 +19,32 @@
         <mat-card-subtitle>Powered by mnky</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <h2 style="text-align: center" *ngIf="this.totalBalance">{{this.totalBalance | number}} €</h2>
-        <div class='main__input'>
-
+        <h2 style="text-align: center" *ngIf="this.totalBalance">
+          {{ this.totalBalance | number }} €
+        </h2>
+        <div class="main__input">
           <form [formGroup]="selectInputForm">
-            <div class='row'>
+            <div class="row">
               <mat-form-field style="width: 100%" appearance="fill">
                 <mat-label>Enter a date range</mat-label>
                 <mat-date-range-input [rangePicker]="picker">
-                  <input matStartDate formControlName="start" placeholder="Start date">
-                  <input matEndDate formControlName="end" (dateChange)="updateCalc($event)" placeholder="End date">
+                  <input
+                    matStartDate
+                    formControlName="start"
+                    placeholder="Start date"
+                  />
+                  <input
+                    matEndDate
+                    formControlName="end"
+                    (dateChange)="updateCalc($event)"
+                    placeholder="End date"
+                  />
                 </mat-date-range-input>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
                 <mat-date-range-picker #picker></mat-date-range-picker>
-
               </mat-form-field>
             </div>
           </form>
@@ -35,73 +52,122 @@
           <mat-divider></mat-divider>
 
           <form [formGroup]="transactionInputForm" (ngSubmit)="submit()">
-
-            <div class='row'>
-              <div class='column'>
+            <div class="row">
+              <div class="column">
                 <mat-form-field appearance="fill">
                   <mat-label>Wähle eine Kategorie</mat-label>
                   <mat-select formControlName="categoryId">
-                    <mat-option *ngFor="let item of categories" [value]="item.id">{{item.name}}</mat-option>
+                    <mat-option
+                      *ngFor="let item of categories"
+                      [value]="item.id"
+                      >{{ item.name }}</mat-option
+                    >
                   </mat-select>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
                   <mat-label>Betrag</mat-label>
-                  <input type="number" matInput formControlName="value" placeholder="Bsp.: 10,99">
+                  <input
+                    type="number"
+                    matInput
+                    formControlName="value"
+                    placeholder="Bsp.: 10,99"
+                  />
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
                   <mat-label>Titel</mat-label>
-                  <input type="text" matInput formControlName="title" placeholder="Amazon, Depot, etc.">
+                  <input
+                    type="text"
+                    matInput
+                    formControlName="title"
+                    placeholder="Amazon, Depot, etc."
+                  />
                 </mat-form-field>
-
               </div>
-              <div class='column'>
+              <div class="column">
                 <mat-form-field appearance="fill">
                   <mat-label>Wähle ein Type aus</mat-label>
                   <mat-select formControlName="transactionType">
-                    <mat-option *ngFor="let transaction of keys(transactionTypes)"
-                                [value]="transaction">{{transaction}}</mat-option>
+                    <mat-option
+                      *ngFor="let transaction of keys(transactionTypes)"
+                      [value]="transaction"
+                      >{{ transaction }}</mat-option
+                    >
                   </mat-select>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
                   <mat-label>Datum</mat-label>
-                  <input matInput formControlName="date" [matDatepicker]="transactionDate">
-                  <mat-datepicker-toggle matSuffix [for]="transactionDate"></mat-datepicker-toggle>
+                  <input
+                    matInput
+                    formControlName="date"
+                    [matDatepicker]="transactionDate"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="transactionDate"
+                  ></mat-datepicker-toggle>
                   <mat-datepicker #transactionDate></mat-datepicker>
                 </mat-form-field>
 
                 <mat-form-field class="full-width">
                   <mat-label>Beschreibung</mat-label>
-                  <textarea matInput formControlName="description"
-                            placeholder="Ausgabe wurde wegen xyz getätigt."></textarea>
+                  <textarea
+                    matInput
+                    formControlName="description"
+                    placeholder="Ausgabe wurde wegen xyz getätigt."
+                  ></textarea>
                 </mat-form-field>
               </div>
-
             </div>
-            <button class="btn__action" mat-raised-button color="primary" type="submit"
-                    [disabled]="!transactionInputForm.valid">Speichern
+            <button
+              class="btn__action"
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="!transactionInputForm.valid"
+            >
+              Speichern
             </button>
-            <button class="btn__action" mat-raised-button color="accent" type="button" (click)="resetForm()">Reset
+            <button
+              class="btn__action"
+              mat-raised-button
+              color="accent"
+              type="button"
+              (click)="resetForm()"
+            >
+              Reset
             </button>
           </form>
         </div>
 
-        <br>
+        <br />
         <mat-divider></mat-divider>
-        <br>
+        <br />
 
         <mat-card-actions id="transaction__list">
-          <ng-container *ngFor="let transaction of dbTransactions; trackBy: trackByFn">
+          <ng-container
+            *ngFor="let transaction of dbTransactions; trackBy: trackByFn"
+          >
             <div class="transaction row">
-              <mat-icon style="font-size: 3vh; display: table"
-                        [ngStyle]="{'color':transaction.transactionType === transactionTypes.Income ? '#66BB6A' : '#ef5350'}">
+              <mat-icon
+                style="font-size: 3vh; display: table"
+                [ngStyle]="{
+                  color:
+                    transaction.transactionType === transactionTypes.Income
+                      ? '#66BB6A'
+                      : '#ef5350'
+                }"
+              >
                 monetization_on
               </mat-icon>
               <div style="margin: 5px" class="column">
-                <p>{{transaction.title}}</p>
-                <p>{{transaction.value}} € - {{transaction.date | date: 'dd.MM.YYYY'}}</p>
+                <p>{{ transaction.title }}</p>
+                <p>
+                  {{ transaction.value }} € -
+                  {{ transaction.date | date: "dd.MM.YYYY" }}
+                </p>
               </div>
               <button
                 class="delete__btn"
@@ -119,9 +185,14 @@
   </div>
   <div class="dashboard__items">
     <mat-card class="example-card">
-      <div *ngIf="this.dbTransactions?.length > 0 && this.categories?.length > 0">
-        <app-chart [transactions]="this.dbTransactions" [transactionType]="transactionTypes.Expense"
-                   [categories]="this.categories"></app-chart>
+      <div
+        *ngIf="this.dbTransactions?.length > 0 && this.categories?.length > 0"
+      >
+        <app-chart
+          [transactions]="this.dbTransactions"
+          [transactionType]="transactionTypes.Expense"
+          [categories]="this.categories"
+        ></app-chart>
       </div>
     </mat-card>
   </div>

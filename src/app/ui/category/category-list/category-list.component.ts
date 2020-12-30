@@ -6,7 +6,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../../../shared/components/dialog-box/dialog-box.component';
 import { MatTable } from '@angular/material/table';
-import { AuthService } from "../../../shared/services/auth.service";
+import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-category-list',
@@ -17,13 +17,13 @@ export class CategoryListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'share', 'commands'];
   dataSource: CategorieDto[];
 
-  @ViewChild(MatTable, {static: true}) table: MatTable<any>;
+  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
 
   constructor(
     private apiService: FinanceApiService,
-    public dialog: MatDialog, private authService: AuthService
-  ) {
-  }
+    public dialog: MatDialog,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.apiService.getAllCategories().subscribe((res) => {
@@ -54,7 +54,7 @@ export class CategoryListComponent implements OnInit {
   // TODO add userId to category
   addRowData(row_obj) {
     const category = row_obj as CategorieDto;
-    console.log(this.authService.decodedToken)
+    console.log(this.authService.decodedToken);
     category.userId = this.authService.decodedToken.nameid;
     this.dataSource.push(category);
     this.apiService.postCategory(category).subscribe((value) => {
@@ -80,8 +80,7 @@ export class CategoryListComponent implements OnInit {
   }
 
   deleteRowData(row_obj) {
-    this.apiService.deleteCategory(row_obj).subscribe((value) => {
-    });
+    this.apiService.deleteCategory(row_obj).subscribe((value) => {});
     this.dataSource = this.dataSource.filter((value, key) => {
       return value.id != row_obj.id;
     });

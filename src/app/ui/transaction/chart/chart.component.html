@@ -1,11 +1,15 @@
 <div class="chart-wrapper">
-  <canvas baseChart
-          [ngStyle]="{'color':transactionType === transactionTypeEnum.Income ? 'green' : 'red'}"
-          [datasets]="barChartData"
-          [labels]="barChartLabels"
-          [options]="barChartOptions"
-          [plugins]="barChartPlugins"
-          [legend]="barChartLegend"
-          [chartType]="barChartType">
+  <canvas
+    baseChart
+    [ngStyle]="{
+      color: transactionType === transactionTypeEnum.Income ? 'green' : 'red'
+    }"
+    [datasets]="barChartData"
+    [labels]="barChartLabels"
+    [options]="barChartOptions"
+    [plugins]="barChartPlugins"
+    [legend]="barChartLegend"
+    [chartType]="barChartType"
+  >
   </canvas>
 </div>
