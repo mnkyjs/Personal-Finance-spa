@@ -1,12 +1,14 @@
-import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
-import {AuthGuard} from "./shared/auth/guards/auth.guard";
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './shared/guards/auth.guard';
+import { LandingComponent } from './ui/main/landing/landing.component';
 
-const routes: Routes = [{
-  path: 'login',
-  redirectTo: 'auth/login',
-  pathMatch: 'full',
-},
+const routes: Routes = [
+  {
+    path: 'login',
+    redirectTo: 'auth/login',
+    pathMatch: 'full',
+  },
   {
     path: 'auth',
     loadChildren: () =>
@@ -14,16 +16,33 @@ const routes: Routes = [{
   },
   {
     path: '',
+    component: LandingComponent,
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
-    loadChildren: () =>
-      import('./ui/main/main.module').then((mod) => mod.MainModule),
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./ui/transaction/transaction.module').then(
+            (mod) => mod.TransactionModule
+          ),
+      },
+      {
+        path: 'category',
+        loadChildren: () =>
+          import('./ui/category/category.module').then(
+            (mod) => mod.CategoryModule
+          ),
+      },
+    ],
   },
-  {path: '**', redirectTo: '', pathMatch: 'full'},];
+
+  {path: '**', redirectTo: '', pathMatch: 'full'},
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {
 }

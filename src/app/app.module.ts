@@ -1,44 +1,49 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {LoginComponent} from './shared/auth/components/login/login.component';
-import {RegisterComponent} from './shared/auth/components/register/register.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {TokenInterceptor} from "./shared/auth/tools/token.interceptor";
-import {API_BASE_URL, FinanceApiService} from "./shared/api/service/personal-finance-api.service";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {SharedModule} from "./shared/shared.module";
-import {ApiModule} from "./shared/api/api.module";
-
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
+import { API_BASE_URL } from './shared/api/service/personal-finance-api.service';
+import { SharedModule } from './shared/shared.module';
+import { ApiModule } from './shared/api/api.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MainModule } from './ui/main/main.module';
+import { JwtModule } from "@auth0/angular-jwt";
+import { environment } from "../environments/environment";
+import { httpInterceptors } from "./shared/interceptors/httpInterceptors";
+import { MAT_DATE_LOCALE } from "@angular/material/core";
 
 const modules = [
   BrowserModule,
+  BrowserAnimationsModule,
   HttpClientModule,
   AppRoutingModule,
-  FormsModule,
-  ReactiveFormsModule,
   ApiModule,
-  SharedModule
-]
+  SharedModule,
+  MainModule,
+  JwtModule.forRoot({
+    config: {
+      tokenGetter,
+      allowedDomains: [`${environment.apiFix}`],
+      disallowedRoutes: [`${environment.apiFix}/api/auth`],
+    },
+  }),
+];
+
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    RegisterComponent
-  ],
+  declarations: [AppComponent],
   imports: [...modules],
   providers: [
-    {provide: API_BASE_URL, useValue: 'http://localhost:6025'},
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true,
-    },
+    ...httpInterceptors,
+    {provide: API_BASE_URL, useValue: environment.apiUrl},
+    { provide: MAT_DATE_LOCALE, useValue: 'de-DE' },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

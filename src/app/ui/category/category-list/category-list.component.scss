@@ -1,0 +1,35 @@
+#add__btn {
+  width: 13vw;
+}
+
+.w-75 {
+  max-width: 75px;
+}
+
+.w-100 {
+  max-width: 100px;
+}
+
+.th-center {
+  text-align: center;
+}
+.th-left {
+  text-align: left;
+}
+.th-right {
+  text-align: right;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 98vw;
+}
+
+.command__btn {
+  margin: 5px;
+}
+
+table {
+  margin: 10px 0;
+}

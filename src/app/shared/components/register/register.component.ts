@@ -1,21 +1,23 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {AuthService} from "../../service/auth.service";
-import {Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { AlertService } from "../../services/alert.service";
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-
+  hide = true;
   registerForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private _alert: AlertService
   ) {
   }
 
@@ -31,10 +33,8 @@ export class RegisterComponent implements OnInit {
 
   register(): void {
     this.authService.register(this.registerForm.value).subscribe((res) => {
-
-
+      this._alert.success('Erfolgreich registriert!');
       this.router.navigate(['/login']);
     });
   }
-
 }

@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  apiUrl: '/',
+  apiFix: '0.0.0.0:6025',
 };

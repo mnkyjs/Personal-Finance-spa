@@ -1,25 +1,24 @@
 <div class="container">
   <header class="navbar">
-    <nav>
+    <mat-toolbar id="toolbar">
       <a routerLink="/">
         <img width="40" height="40" src="assets/images/logo.png" alt="logo"
-        /></a>
+      /></a>
       <ul class="nav__links separated">
         <li class="nav__item">
-          <a routerLinkActive="active" class="nav__link">Categories</a>
+          <a routerLink="/category" routerLinkActive="active" class="nav__link"
+            >Kategorien</a
+          >
         </li>
         <li class="nav__item">
-          <a routerLinkActive="active" class="nav__link">Transactions</a>
-        </li>
-        <li class="nav__item">
-          <a routerLinkActive="active" class="nav__link">???</a>
+          <a routerLinkActive="active" class="nav__link">Transactionen</a>
         </li>
       </ul>
-      <a (click)="logout()"><button class="btn">Logout</button></a>
-    </nav>
+      <button mat-raised-button (click)="logout()" color="primary">
+        Ausloggen
+      </button>
+    </mat-toolbar>
   </header>
-
-  <div class="side-nav"></div>
 
   <main>
     <router-outlet></router-outlet>

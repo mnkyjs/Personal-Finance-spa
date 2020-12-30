@@ -1,24 +1,25 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
-import {AuthService} from "../../service/auth.service";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { AlertService } from "../../services/alert.service";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-
+  hide = true;
   loginForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {
-  }
+    private route: ActivatedRoute,
+    private _alert: AlertService
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -45,9 +46,9 @@ export class LoginComponent implements OnInit {
           });
           returnUrl = returnUrl.substring(0, returnUrl.indexOf('?'));
         }
-        this.router.navigate([returnUrl], {queryParams});
+        this._alert.success('Angemeldet!')
+        this.router.navigate([returnUrl], { queryParams });
       });
     });
   }
-
 }

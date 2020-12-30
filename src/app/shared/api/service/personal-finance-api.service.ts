@@ -141,8 +141,8 @@ export class FinanceApiService {
      * @param body (optional) 
      * @return Success
      */
-    postCategorie(body: CategorieDto | undefined): Observable<CategorieDto> {
-        let url_ = this.baseUrl + "/api/Categorie";
+    postCategory(body: CategorieDto | undefined): Observable<CategorieDto> {
+        let url_ = this.baseUrl + "/api/Category";
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = JSON.stringify(body);
@@ -158,11 +158,11 @@ export class FinanceApiService {
         };
 
         return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processPostCategorie(response_);
+            return this.processPostCategory(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processPostCategorie(<any>response_);
+                    return this.processPostCategory(<any>response_);
                 } catch (e) {
                     return <Observable<CategorieDto>><any>_observableThrow(e);
                 }
@@ -171,7 +171,7 @@ export class FinanceApiService {
         }));
     }
 
-    protected processPostCategorie(response: HttpResponseBase): Observable<CategorieDto> {
+    protected processPostCategory(response: HttpResponseBase): Observable<CategorieDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -194,11 +194,63 @@ export class FinanceApiService {
     }
 
     /**
+     * @param body (optional) 
+     * @return Success
+     */
+    deleteCategory(body: CategorieDto | undefined): Observable<void> {
+        let url_ = this.baseUrl + "/api/Category";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processDeleteCategory(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processDeleteCategory(<any>response_);
+                } catch (e) {
+                    return <Observable<void>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<void>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processDeleteCategory(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return _observableOf<void>(<any>null);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<void>(<any>null);
+    }
+
+    /**
      * Gets the list of all Categories.
      * @return Success
      */
     getAllCategories(): Observable<CategorieDto[]> {
-        let url_ = this.baseUrl + "/api/Categorie";
+        let url_ = this.baseUrl + "/api/Category";
         url_ = url_.replace(/[?&]$/, "");
 
         let options_ : any = {
@@ -250,65 +302,10 @@ export class FinanceApiService {
     }
 
     /**
-     * @param body (optional) 
      * @return Success
      */
-    deleteCategorie(id: string, body: CategorieDto | undefined): Observable<void> {
-        let url_ = this.baseUrl + "/api/Categorie/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(body);
-
-        let options_ : any = {
-            body: content_,
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json",
-            })
-        };
-
-        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processDeleteCategorie(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processDeleteCategorie(<any>response_);
-                } catch (e) {
-                    return <Observable<void>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<void>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processDeleteCategorie(response: HttpResponseBase): Observable<void> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return _observableOf<void>(<any>null);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<void>(<any>null);
-    }
-
-    /**
-     * @return Success
-     */
-    getSingleCategorieById(id: number): Observable<CategorieDto[]> {
-        let url_ = this.baseUrl + "/api/Categorie/{id}";
+    getSingleCategoryById(id: number): Observable<CategorieDto[]> {
+        let url_ = this.baseUrl + "/api/Category/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -323,11 +320,11 @@ export class FinanceApiService {
         };
 
         return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processGetSingleCategorieById(response_);
+            return this.processGetSingleCategoryById(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processGetSingleCategorieById(<any>response_);
+                    return this.processGetSingleCategoryById(<any>response_);
                 } catch (e) {
                     return <Observable<CategorieDto[]>><any>_observableThrow(e);
                 }
@@ -336,7 +333,7 @@ export class FinanceApiService {
         }));
     }
 
-    protected processGetSingleCategorieById(response: HttpResponseBase): Observable<CategorieDto[]> {
+    protected processGetSingleCategoryById(response: HttpResponseBase): Observable<CategorieDto[]> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -366,8 +363,8 @@ export class FinanceApiService {
      * @param body (optional) 
      * @return Success
      */
-    putCategorie(id: number, body: CategorieDto | undefined): Observable<CategorieDto> {
-        let url_ = this.baseUrl + "/api/Categorie/{id}";
+    putCategory(id: number, body: CategorieDto | undefined): Observable<CategorieDto> {
+        let url_ = this.baseUrl + "/api/Category/{id}";
         if (id === undefined || id === null)
             throw new Error("The parameter 'id' must be defined.");
         url_ = url_.replace("{id}", encodeURIComponent("" + id));
@@ -386,11 +383,11 @@ export class FinanceApiService {
         };
 
         return this.http.request("put", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processPutCategorie(response_);
+            return this.processPutCategory(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processPutCategorie(<any>response_);
+                    return this.processPutCategory(<any>response_);
                 } catch (e) {
                     return <Observable<CategorieDto>><any>_observableThrow(e);
                 }
@@ -399,7 +396,7 @@ export class FinanceApiService {
         }));
     }
 
-    protected processPutCategorie(response: HttpResponseBase): Observable<CategorieDto> {
+    protected processPutCategory(response: HttpResponseBase): Observable<CategorieDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -698,6 +695,66 @@ export class FinanceApiService {
         }
         return _observableOf<TransactionDto>(<any>null);
     }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+    getAllTransactionsInDateRange(body: DateRangeDto | undefined): Observable<TransactionDto[]> {
+        let url_ = this.baseUrl + "/api/Transaction/dateRange";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json",
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllTransactionsInDateRange(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllTransactionsInDateRange(<any>response_);
+                } catch (e) {
+                    return <Observable<TransactionDto[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<TransactionDto[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllTransactionsInDateRange(response: HttpResponseBase): Observable<TransactionDto[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(TransactionDto.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<TransactionDto[]>(<any>null);
+    }
 }
 
 export class UserRegisterDto implements IUserRegisterDto {
@@ -892,7 +949,7 @@ export class TransactionDto implements ITransactionDto {
     value?: number;
     date?: Date;
     userId?: number;
-    categorieId?: number;
+    categoryId?: number;
     transactionType?: TransactionTypeEnum;
 
     constructor(data?: ITransactionDto) {
@@ -912,7 +969,7 @@ export class TransactionDto implements ITransactionDto {
             this.value = _data["value"];
             this.date = _data["date"] ? new Date(_data["date"].toString()) : <any>undefined;
             this.userId = _data["userId"];
-            this.categorieId = _data["categorieId"];
+            this.categoryId = _data["categoryId"];
             this.transactionType = _data["transactionType"];
         }
     }
@@ -932,7 +989,7 @@ export class TransactionDto implements ITransactionDto {
         data["value"] = this.value;
         data["date"] = this.date ? this.date.toISOString() : <any>undefined;
         data["userId"] = this.userId;
-        data["categorieId"] = this.categorieId;
+        data["categoryId"] = this.categoryId;
         data["transactionType"] = this.transactionType;
         return data; 
     }
@@ -945,8 +1002,48 @@ export interface ITransactionDto {
     value?: number;
     date?: Date;
     userId?: number;
-    categorieId?: number;
+    categoryId?: number;
     transactionType?: TransactionTypeEnum;
+}
+
+export class DateRangeDto implements IDateRangeDto {
+    startDate?: Date;
+    endDate?: Date;
+
+    constructor(data?: IDateRangeDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.startDate = _data["startDate"] ? new Date(_data["startDate"].toString()) : <any>undefined;
+            this.endDate = _data["endDate"] ? new Date(_data["endDate"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): DateRangeDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new DateRangeDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
+        data["endDate"] = this.endDate ? this.endDate.toISOString() : <any>undefined;
+        return data; 
+    }
+}
+
+export interface IDateRangeDto {
+    startDate?: Date;
+    endDate?: Date;
 }
 
 export class ApiException extends Error {
