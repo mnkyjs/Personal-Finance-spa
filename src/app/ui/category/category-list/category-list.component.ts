@@ -54,7 +54,6 @@ export class CategoryListComponent implements OnInit {
   // TODO add userId to category
   addRowData(row_obj) {
     const category = row_obj as CategorieDto;
-    console.log(this.authService.decodedToken);
     category.userId = this.authService.decodedToken.nameid;
     this.dataSource.push(category);
     this.apiService.postCategory(category).subscribe((value) => {

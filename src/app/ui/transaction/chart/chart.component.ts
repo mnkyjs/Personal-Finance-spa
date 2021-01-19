@@ -5,7 +5,7 @@ import {
   TransactionTypeEnum,
 } from '../../../shared/api/service/personal-finance-api.service';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { Color, Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-chart',
@@ -19,104 +19,81 @@ export class ChartComponent implements OnInit {
   @Input() categories: CategorieDto[];
   @Input() transactionType: TransactionTypeEnum;
 
-  transactionTypeEnum = TransactionTypeEnum;
-  chartCategories: string[] = [];
-  chartCategoriesAmount: number[] = [];
-
   barChartOptions: ChartOptions = {
     responsive: true,
   };
-  barChartLabels: Label[];
-  barChartType: ChartType = 'bar';
+  barChartLabels: Label[] = [];
+  barChartType: ChartType = 'line';
   barChartLegend = true;
   barChartPlugins = [];
 
-  barChartData: ChartDataSets[];
+  public lineChartColors: Color[] = [
+    {
+      // grey
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)',
+    },
+    {
+      // red
+      backgroundColor: 'rgba(255,0,0,0.3)',
+      borderColor: 'red',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)',
+    },
+  ];
+
+  barChartData: ChartDataSets[] = [
+    { data: [], label: 'Einnahmen' },
+    { data: [], label: 'Ausgaben' },
+  ];
 
   constructor() {}
 
   ngOnInit(): void {
-    this._prepareTransactionArray();
-    this._prepareDataForChart();
-
-    this.barChartLabels = this.chartCategories;
-    this.barChartData = [
-      {
-        data: this.chartCategoriesAmount,
-        label:
-          this.transactionType === TransactionTypeEnum.Income
-            ? 'Einnahmen'
-            : 'Ausgaben',
-        backgroundColor:
-          this.transactionType === TransactionTypeEnum.Income
-            ? '#66BB6A'
-            : '#ef5350',
-      },
-    ];
+    this._lineChart();
   }
 
-  private _prepareTransactionArray(): void {
-    switch (this.transactionType) {
-      case TransactionTypeEnum.Income:
-        this.transactionForChartView = [
-          ...this.transactions?.filter(
-            (t) => t.transactionType === TransactionTypeEnum.Income
-          ),
-        ];
-        break;
-
-      case TransactionTypeEnum.Expense:
-        this.transactionForChartView = [
-          ...this.transactions?.filter(
-            (t) => t.transactionType === TransactionTypeEnum.Expense
-          ),
-        ];
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  private _prepareDataForChart(): void {
-    const tempCategories: string[] = [];
-    const tempAmounts: number[] = [];
-    let currentAmount = 0;
-    let sortedArray = [
-      ...this.transactionForChartView.sort((a, b) =>
-        a.categoryId > b.categoryId ? 1 : -1
-      ),
-    ];
-    let currentCategoryId = [...sortedArray]?.shift().categoryId;
-
-    for (const transaction of sortedArray) {
-      if (transaction.categoryId === currentCategoryId) {
-        tempCategories.indexOf(
-          this.categories.find((c) => c.id === transaction.categoryId).name
-        ) === -1 &&
-          tempCategories.push(
-            this.categories.find((c) => c.id === transaction.categoryId).name
+  private _lineChart() {
+    if (this.transactions) {
+      this.transactions.map((transaction) => {
+        if (transaction.transactionType === TransactionTypeEnum.Income) {
+          if (this.barChartData[0].data.length > 0) {
+            this.barChartData[0].data.push(
+              (this.barChartData[0]?.data.slice(-1)[0] as number) +
+                transaction.value
+            );
+          } else {
+            this.barChartData[0].data.push(transaction.value);
+          }
+          this.barChartLabels.push(
+            transaction.date.toLocaleString('de-De').slice(0, 9)
           );
-        currentAmount += transaction.value;
-      } else {
-        tempAmounts.push(currentAmount);
-        tempCategories.indexOf(
-          this.categories.find((c) => c.id === transaction.categoryId).name
-        ) === -1 &&
-          tempCategories.push(
-            this.categories.find((c) => c.id === transaction.categoryId).name
+        }
+
+        if (transaction.transactionType === TransactionTypeEnum.Expense) {
+          if (this.barChartData[1].data.length > 0) {
+            this.barChartData[1].data.push(
+              (this.barChartData[1]?.data.slice(-1)[0] as number) +
+                transaction.value * -1
+            );
+          } else {
+            this.barChartData[1].data.push(transaction.value * -1);
+          }
+          if (this.barChartData[0].data.length > 0) {
+            const value = this.barChartData[0].data?.slice(-1)[0] as number;
+            this.barChartData[0].data.push(value + transaction.value);
+          }
+          this.barChartLabels.push(
+            transaction.date.toLocaleString('de-De').slice(0, 9)
           );
-        currentCategoryId = transaction.categoryId;
-        currentAmount = 0;
-        currentAmount += transaction.value;
-      }
-
-      if (transaction === sortedArray[sortedArray.length - 1]) {
-        tempAmounts.push(currentAmount);
-      }
+        }
+      });
     }
-
-    this.chartCategoriesAmount = tempAmounts;
-    this.chartCategories = tempCategories;
   }
 }

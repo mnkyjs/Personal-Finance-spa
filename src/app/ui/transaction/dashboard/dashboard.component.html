@@ -1,18 +1,5 @@
 <div class="dashboard__wrapper">
   <div class="dashboard__items">
-    <mat-card class="example-card">
-      <div
-        *ngIf="this.dbTransactions?.length > 0 && this.categories?.length > 0"
-      >
-        <app-chart
-          [transactions]="this.dbTransactions"
-          [transactionType]="transactionTypes.Income"
-          [categories]="this.categories"
-        ></app-chart>
-      </div>
-    </mat-card>
-  </div>
-  <div class="dashboard__items">
     <mat-card id="dashboard__input__area" class="example-card">
       <mat-card-header>
         <mat-card-title>Ausgaben Tracker</mat-card-title>
@@ -172,7 +159,7 @@
               <button
                 class="delete__btn"
                 mat-mini-fab
-                (click)="deleteTransaction(transaction.id)"
+                (click)="deleteTransaction(transaction)"
                 aria-label="Example icon button with a menu icon"
               >
                 <mat-icon>delete</mat-icon>

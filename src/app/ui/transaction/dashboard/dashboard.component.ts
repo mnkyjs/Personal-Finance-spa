@@ -76,27 +76,18 @@ export class DashboardComponent implements OnInit {
         if (value) {
           this.dbTransactions = value;
           value.map((transaction) => {
-            switch (transaction.transactionType) {
-              case TransactionTypeEnum.Expense:
-                this.totalBalance -= transaction.value;
-                break;
-
-              case TransactionTypeEnum.Income:
-                this.totalBalance += transaction.value;
-                break;
-
-              default:
-                break;
-            }
+            this.totalBalance += transaction.value;
           });
         }
       });
   }
 
-  deleteTransaction(transactionId: number) {
-    this._apiService.deleteTransaction(transactionId).subscribe((value) => {
-      this._alert.success('Eintrag gelöscht');
-    });
+  deleteTransaction(transaction: TransactionDto) {
+    if (confirm(`${transaction.title} wirklich löschen?`)) {
+      this._apiService.deleteTransaction(transaction.id).subscribe((value) => {
+        this._alert.success('Eintrag gelöscht');
+      });
+    }
   }
 
   submit() {
@@ -104,6 +95,8 @@ export class DashboardComponent implements OnInit {
       ...this.transactionInputForm.value,
     } as TransactionDto;
     transactionEntity.date.setHours(transactionEntity.date.getHours() + 2);
+    if (transactionEntity.transactionType === TransactionTypeEnum.Expense)
+      transactionEntity.value *= -1;
     this._apiService.postTransaction(transactionEntity).subscribe((value) => {
       if (value) {
         this._alert.success('Eintrag gespeichert');
