@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CategorieDto } from '../../api/service/personal-finance-api.service';
+import { CategorieDto } from '../../../api/service/personal-finance-api.service';
 
 @Component({
   selector: 'app-dialog-box',
@@ -9,23 +9,23 @@ import { CategorieDto } from '../../api/service/personal-finance-api.service';
 })
 export class DialogBoxComponent {
   action: string;
-  local_data: any;
+  localData: any;
 
   constructor(
     public dialogRef: MatDialogRef<DialogBoxComponent>,
-    //@Optional() is used to prevent error if no data is passed
+    // @Optional() is used to prevent error if no data is passed
     @Optional() @Inject(MAT_DIALOG_DATA) public data: CategorieDto
   ) {
     console.log(data);
-    this.local_data = { ...data };
-    this.action = this.local_data.action;
+    this.localData = { ...data };
+    this.action = this.localData.action;
   }
 
-  doAction() {
-    this.dialogRef.close({ event: this.action, data: this.local_data });
+  doAction(): void {
+    this.dialogRef.close({ event: this.action, data: this.localData });
   }
 
-  closeDialog() {
+  closeDialog(): void {
     this.dialogRef.close({ event: 'Cancel' });
   }
 }

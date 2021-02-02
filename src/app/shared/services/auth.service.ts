@@ -4,8 +4,9 @@ import { map } from 'rxjs/operators';
 import {
   AuthUserDto,
   FinanceApiService,
-  UserLoginDto,
-} from '../api/service/personal-finance-api.service';
+  UserLoginDto, UserRegisterDto,
+} from '../../api/service/personal-finance-api.service';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,23 +17,22 @@ export class AuthService {
 
   constructor(private apiService: FinanceApiService) {}
 
-  login(model: UserLoginDto) {
+  login(model: UserLoginDto): Observable<void> {
     return this.apiService.login(model).pipe(
       map((response: AuthUserDto) => {
         if (response) {
           localStorage.setItem('token', response.token);
           this.decodedToken = this.jwtHelper.decodeToken(response.token);
-          console.log(this.decodedToken);
         }
       })
     );
   }
 
-  register(model: any) {
+  register(model: any): Observable<UserRegisterDto> {
     return this.apiService.register(model);
   }
 
-  loggedIn() {
+  loggedIn(): boolean {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
   }

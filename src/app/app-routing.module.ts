@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard } from './shared/guards/auth.guard';
-import { LandingComponent } from './ui/main/landing/landing.component';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
+import {AuthGuard} from './shared/guards/auth.guard';
+import {MainNavigationComponent} from './main-navigation/main-navigation.component';
+import {TransactionComponent} from './transaction/transaction.component';
 
 const routes: Routes = [
   {
@@ -12,36 +13,38 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () =>
-      import('./shared/shared.module').then((mod) => mod.SharedModule),
+      import('./authentication/auth.module').then((mod) => mod.AuthModule),
   },
   {
     path: '',
-    component: LandingComponent,
+    component: MainNavigationComponent,
     runGuardsAndResolvers: 'always',
     canActivate: [AuthGuard],
     children: [
       {
         path: '',
+        component: TransactionComponent,
         loadChildren: () =>
-          import('./ui/transaction/transaction.module').then(
+          import('./transaction/transaction.module').then(
             (mod) => mod.TransactionModule
           ),
       },
       {
         path: 'category',
         loadChildren: () =>
-          import('./ui/category/category.module').then(
+          import('./category/category.module').then(
             (mod) => mod.CategoryModule
           ),
       },
     ],
   },
 
-  { path: '**', redirectTo: '', pathMatch: 'full' },
+  {path: '**', redirectTo: '', pathMatch: 'full'},
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

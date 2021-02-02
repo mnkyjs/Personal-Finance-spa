@@ -7,7 +7,7 @@
       name="name"
       placeholder="{{ action }} Name"
       matInput
-      [(ngModel)]="local_data.name"
+      [(ngModel)]="localData.name"
     />
   </mat-form-field>
 
@@ -15,13 +15,13 @@
     <mat-checkbox
       name="checkbox"
       class="example-margin"
-      [(ngModel)]="local_data.isShared"
+      [(ngModel)]="localData.isShared"
       >Share this categorie?</mat-checkbox
     >
   </ng-container>
 
   <ng-template #elseTemplate>
-    Sure to delete <b>{{ local_data.name }}</b
+    Sure to delete <b>{{ localData.name }}</b
     >?
   </ng-template>
 </div>

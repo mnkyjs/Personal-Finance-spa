@@ -1,0 +1,75 @@
+@import "styles";
+
+#toolbar {
+  justify-content: space-between;
+  width: 100vw;
+  padding: 0 2%;
+}
+
+header {
+  margin-bottom: 10px;
+}
+
+main {
+  width: 100vw;
+}
+
+ul {
+  list-style-type: none;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--primary);
+}
+
+.container {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "main main";
+}
+
+.navbar {
+  grid-area: header;
+}
+
+.side-nav {
+  grid-area: sidebar;
+  max-width: 30vw;
+  min-width: 10vw;
+  background-color: #00b9bc;
+}
+
+.nav__links {
+  display: flex;
+  flex-direction: row;
+}
+
+.nav__links.separated .nav__item .nav-link {
+  min-height: 2.6rem;
+}
+
+.nav__links.separated .nav__item:not(:last-of-type)::after {
+  content: "|";
+  padding: 0.25rem 1.5rem;
+}
+
+.nav__link.active {
+  border-bottom: 1px solid var(--primary);
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.nav__link:hover {
+  cursor: pointer;
+  border-bottom: 1px solid var(--primary);
+}
+
+.logo a:hover {
+  text-decoration: none;
+}
