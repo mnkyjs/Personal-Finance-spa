@@ -1,23 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {
   CategorieDto,
   TransactionDto,
   TransactionTypeEnum,
 } from '../../../api/service/personal-finance-api.service';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
+import {ChartDataSets, ChartOptions, ChartType} from 'chart.js';
+import {Color, Label} from 'ng2-charts';
+import {TransactionStoreService} from '../../store/transaction-store.service';
 
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
 })
-export class ChartComponent implements OnInit {
+export class ChartComponent implements OnInit, OnChanges {
   transactionForChartView: TransactionDto[];
-
-  @Input() transactions: TransactionDto[];
   @Input() categories: CategorieDto[];
-  @Input() transactionType: TransactionTypeEnum;
 
   barChartOptions: ChartOptions = {
     responsive: true,
@@ -49,24 +47,29 @@ export class ChartComponent implements OnInit {
   ];
 
   barChartData: ChartDataSets[] = [
-    { data: [], label: 'Einnahmen' },
-    { data: [], label: 'Ausgaben' },
+    {data: [], label: 'Einnahmen'},
+    {data: [], label: 'Ausgaben'},
   ];
 
-  constructor() {}
-
-  ngOnInit(): void {
-    this._lineChart();
+  constructor(private store: TransactionStoreService) {
   }
 
-  private _lineChart() {
-    if (this.transactions) {
-      this.transactions.map((transaction) => {
+  ngOnChanges(changes: SimpleChanges): void {
+    this.lineChart();
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  private lineChart(): void {
+    this.store.transaction$.subscribe(transactions => {
+      transactions.map(transaction => {
         if (transaction.transactionType === TransactionTypeEnum.Income) {
           if (this.barChartData[0].data.length > 0) {
             this.barChartData[0].data.push(
               (this.barChartData[0]?.data.slice(-1)[0] as number) +
-                transaction.value
+              transaction.value
             );
           } else {
             this.barChartData[0].data.push(transaction.value);
@@ -80,7 +83,7 @@ export class ChartComponent implements OnInit {
           if (this.barChartData[1].data.length > 0) {
             this.barChartData[1].data.push(
               (this.barChartData[1]?.data.slice(-1)[0] as number) +
-                transaction.value * -1
+              transaction.value * -1
             );
           } else {
             this.barChartData[1].data.push(transaction.value * -1);
@@ -94,6 +97,6 @@ export class ChartComponent implements OnInit {
           );
         }
       });
-    }
+    });
   }
 }

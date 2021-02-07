@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {SharedRoutingModule} from './shared-routing.module';
@@ -15,11 +15,21 @@ const modules = [
   SharedRoutingModule,
 ];
 
+const services = [
+  AuthService
+];
+
 @NgModule({
   declarations: [DialogBoxComponent],
   imports: [...modules],
   exports: [...modules],
-  providers: [AuthService],
+  providers: [...services],
 })
 export class SharedModule {
+  static forRoot(): ModuleWithProviders<SharedModule> {
+    return {
+      ngModule: SharedModule,
+      providers: [...services]
+    };
+  }
 }

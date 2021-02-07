@@ -12,9 +12,11 @@ import {JwtModule} from '@auth0/angular-jwt';
 import {environment} from '../environments/environment';
 import {httpInterceptors} from './shared/interceptors/httpInterceptors';
 import {MainNavigationComponent} from './main-navigation/main-navigation.component';
-import {StoreModule} from '@ngrx/store';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {EffectsModule} from '@ngrx/effects';
+import localeDe from '@angular/common/locales/de';
+import {registerLocaleData} from '@angular/common';
+import { FooterComponent } from './footer/footer.component';
+
+registerLocaleData(localeDe);
 
 const modules = [
   BrowserModule,
@@ -22,10 +24,7 @@ const modules = [
   HttpClientModule,
   AppRoutingModule,
   ApiModule,
-  SharedModule,
-  StoreModule.forRoot({}),
-  EffectsModule.forRoot([]),
-  StoreDevtoolsModule.instrument({ maxAge: 100 }),
+  SharedModule.forRoot(),
   JwtModule.forRoot({
     config: {
       tokenGetter,
@@ -40,7 +39,7 @@ export function tokenGetter(): string {
 }
 
 @NgModule({
-  declarations: [AppComponent, MainNavigationComponent],
+  declarations: [AppComponent, MainNavigationComponent, FooterComponent],
   imports: [...modules],
   providers: [
     ...httpInterceptors,

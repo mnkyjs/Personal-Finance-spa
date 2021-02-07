@@ -3,15 +3,16 @@
 #toolbar {
   justify-content: space-between;
   width: 100vw;
+  height: 10vh;
   padding: 0 2%;
+}
+
+.mat-toolbar {
+  background: transparent;
 }
 
 header {
   margin-bottom: 10px;
-}
-
-main {
-  width: 100vw;
 }
 
 ul {
@@ -27,11 +28,43 @@ a:hover {
   color: var(--primary);
 }
 
+/*
+ * Actual Sticky Footer Styles
+ */
+.all-wrap {
+  min-height: 100vh;
+}
+
+.page-wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.content {
+  flex: 1;
+}
+
+/*
+ * Make the Component injected by Router Outlet full height:
+ */
+main {
+  display: flex;
+  flex-direction: column;
+
+  > *:not(router-outlet) {
+    flex: 1;
+    display: block;
+  }
+}
+
 .container {
   display: grid;
   grid-template-areas:
     "header header"
-    "main main";
+    "main main"
+    "footer footer";
 }
 
 .navbar {

@@ -1,15 +1,15 @@
 <!-- app.component.html -->
+<button
+  id="add__btn"
+  mat-button
+  (click)="openDialog('Add', {})"
+  mat-flat-button
+  color="primary"
+>
+  Hinzufügen
+  <mat-icon>add</mat-icon>
+</button>
 <div class="container text-center">
-  <button
-    id="add__btn"
-    mat-button
-    (click)="openDialog('Add', {})"
-    mat-flat-button
-    color="primary"
-  >
-    Hinzufügen
-    <mat-icon>add</mat-icon>
-  </button>
 
   <table mat-table [dataSource]="dataSource" class="my-table mat-elevation-z8">
     <!--- Note that these columns can be defined in any order.

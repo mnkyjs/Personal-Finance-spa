@@ -7,11 +7,6 @@ import {MaterialModule} from '../shared/material.module';
 import {SharedModule} from '../shared/shared.module';
 import {ChartComponent} from './components/chart/chart.component';
 import {TransactionComponent} from './transaction.component';
-import {StoreModule} from '@ngrx/store';
-import {transactionStoreName} from './store/transaction.store';
-import {transactionsReducer} from './store/transaction.reducer';
-import {TransactionEffects} from './store/transaction.effects';
-import {EffectsModule} from '@ngrx/effects';
 
 const modules = [
   CommonModule,
@@ -19,8 +14,6 @@ const modules = [
   MaterialModule,
   SharedModule,
   ChartsModule,
-  StoreModule.forFeature(transactionStoreName, transactionsReducer),
-  EffectsModule.forFeature([TransactionEffects])
 ];
 
 @NgModule({

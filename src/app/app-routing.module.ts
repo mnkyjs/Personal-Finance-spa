@@ -23,7 +23,6 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        component: TransactionComponent,
         loadChildren: () =>
           import('./transaction/transaction.module').then(
             (mod) => mod.TransactionModule

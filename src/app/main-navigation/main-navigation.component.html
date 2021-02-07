@@ -1,26 +1,21 @@
-<div class="container">
-  <header class="navbar">
-    <mat-toolbar id="toolbar">
-      <a routerLink="/">
-        <img width="40" height="40" src="../../../assets/images/logo.png" alt="logo"
-        /></a>
-      <ul class="nav__links separated">
-        <li class="nav__item">
-          <a routerLink="/category" routerLinkActive="active" class="nav__link"
-          >Kategorien</a
-          >
-        </li>
-        <li class="nav__item">
-          <a routerLinkActive="active" class="nav__link">Transactionen</a>
-        </li>
-      </ul>
-      <button mat-raised-button (click)="logout()" color="primary">
-        Ausloggen
-      </button>
-    </mat-toolbar>
-  </header>
+<div class="container all-wrap">
+  <div class="page-wrap">
+    <header class="navbar">
+      <mat-toolbar id="toolbar">
+        <div>
+          <p style="margin: 0;font-size: 1.5vw">Hallo,</p>
+          <p style="font-size: 2vw">{{userName | titlecase}}</p>
+        </div>
+        <button mat-mini-fab (click)="logout()" color="primary">
+          <mat-icon>logout</mat-icon>
+        </button>
 
-  <main>
-    <router-outlet></router-outlet>
-  </main>
+      </mat-toolbar>
+    </header>
+
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+    <app-footer></app-footer>
+  </div>
 </div>
