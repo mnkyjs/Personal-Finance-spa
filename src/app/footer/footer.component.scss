@@ -1,0 +1,36 @@
+@import 'styles';
+
+section {
+  display: table;
+}
+
+.button-row {
+  display: table-cell;
+  width: 100vw;
+}
+
+.button-row .mat-button-base {
+  margin: 8px 8px 8px 0;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  max-width: 120px;
+}
+
+
+.main-footer {
+  background: #fff;
+  border-top: 1px solid #dee2e6;
+  color: #869099;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,11 +1,12 @@
-import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { map } from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {JwtHelperService} from '@auth0/angular-jwt';
+import {map} from 'rxjs/operators';
 import {
   AuthUserDto,
   FinanceApiService,
-  UserLoginDto,
-} from '../api/service/personal-finance-api.service';
+  UserLoginDto, UserRegisterDto,
+} from '../../api/service/personal-finance-api.service';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +15,10 @@ export class AuthService {
   jwtHelper = new JwtHelperService();
   decodedToken = {} as any;
 
-  constructor(private apiService: FinanceApiService) {}
+  constructor(private apiService: FinanceApiService) {
+  }
 
-  login(model: UserLoginDto) {
+  login(model: UserLoginDto): Observable<void> {
     return this.apiService.login(model).pipe(
       map((response: AuthUserDto) => {
         if (response) {
@@ -28,11 +30,16 @@ export class AuthService {
     );
   }
 
-  register(model: any) {
+  getUserName(): string {
+    const token = localStorage.getItem('token');
+    return this.jwtHelper.decodeToken(token).unique_name;
+  }
+
+  register(model: any): Observable<UserRegisterDto> {
     return this.apiService.register(model);
   }
 
-  loggedIn() {
+  loggedIn(): boolean {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
   }

@@ -13,23 +13,23 @@ export class AlertService {
 
   constructor(private snackBar: MatSnackBar) {}
 
-  success(message: string) {
-    this.config['panelClass'] = ['notification', 'success'];
+  success(message: string): void {
+    this.config[`panelClass`] = ['notification', 'success'];
     this.snackBar.open(message, '', this.config);
   }
 
-  error(message: string) {
-    this.config['panelClass'] = ['notification', 'error'];
+  error(message: string): void {
+    this.config[`panelClass`] = ['notification', 'error'];
     this.snackBar.open(message, '', this.config);
   }
 
-  warning(message: string) {
-    this.config['panelClass'] = ['notification', 'warning'];
+  warning(message: string): void {
+    this.config[`panelClass`] = ['notification', 'warning'];
     this.snackBar.open(message, '', this.config);
   }
 
-  message(message: string) {
-    this.config['panelClass'] = ['notification', 'message'];
+  message(message: string): void {
+    this.config[`panelClass`] = ['notification', 'message'];
     this.snackBar.open(message, '', this.config);
   }
 }

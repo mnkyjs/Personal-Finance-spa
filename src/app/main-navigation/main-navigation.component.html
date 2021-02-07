@@ -1,0 +1,21 @@
+<div class="container all-wrap">
+  <div class="page-wrap">
+    <header class="navbar">
+      <mat-toolbar id="toolbar">
+        <div>
+          <p style="margin: 0;font-size: 1.5vw">Hallo,</p>
+          <p style="font-size: 2vw">{{userName | titlecase}}</p>
+        </div>
+        <button mat-mini-fab (click)="logout()" color="primary">
+          <mat-icon>logout</mat-icon>
+        </button>
+
+      </mat-toolbar>
+    </header>
+
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+    <app-footer></app-footer>
+  </div>
+</div>
