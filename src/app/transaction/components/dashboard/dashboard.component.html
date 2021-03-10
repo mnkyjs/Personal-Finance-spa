@@ -45,7 +45,7 @@
                   <mat-label>Wähle eine Kategorie</mat-label>
                   <mat-select formControlName="categoryId">
                     <mat-option
-                      *ngFor="let item of categories"
+                      *ngFor="let item of (categories$ | async)"
                       [value]="item.id"
                     >{{ item.name }}</mat-option
                     >
@@ -142,7 +142,7 @@
                 style="font-size: 3vh; display: table"
                 [ngStyle]="{
                   color:
-                    transaction.transactionType === transactionTypes.Income
+                    transaction.transactionType === transactionTypes.Einnahmen
                       ? '#66BB6A'
                       : '#ef5350'
                 }"

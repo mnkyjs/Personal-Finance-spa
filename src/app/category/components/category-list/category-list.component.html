@@ -9,9 +9,8 @@
   Hinzufügen
   <mat-icon>add</mat-icon>
 </button>
-<div class="container text-center">
-
-  <table mat-table [dataSource]="dataSource" class="my-table mat-elevation-z8">
+<div class="container">
+  <table mat-table [dataSource]="categories$ | async" class="cat__table">
     <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
@@ -43,7 +42,7 @@
     <!-- Action Column -->
     <ng-container matColumnDef="commands">
       <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element" class="action-link">
+      <td id="commands" mat-cell *matCellDef="let element" class="action-link">
         <button
           class="command__btn"
           mat-mini-fab

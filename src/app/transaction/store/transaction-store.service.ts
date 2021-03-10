@@ -47,7 +47,7 @@ export class TransactionStoreService extends StateService<TransactionState> {
     return this.state;
   }
 
-  loadingProjects(): void {
+  loading(): void {
     this.setState({isLoading: true});
   }
 
@@ -60,7 +60,7 @@ export class TransactionStoreService extends StateService<TransactionState> {
   }
 
   loadTransactions(period: DateRangeDto): void {
-    this.loadingProjects();
+    this.loading();
     this.apiService.getAllTransactionsInDateRange(period).subscribe(data => {
       if (data) {
         this.setState({transactions: data, isLoading: false});

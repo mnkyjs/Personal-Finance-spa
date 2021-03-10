@@ -1,39 +1,36 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-  CategorieDto,
-  FinanceApiService,
-} from '../../../api/service/personal-finance-api.service';
-import { MatDialog } from '@angular/material/dialog';
-import { DialogBoxComponent } from '../../../shared/components/dialog-box/dialog-box.component';
-import { MatTable } from '@angular/material/table';
-import { AuthService } from '../../../shared/services/auth.service';
+import {ChangeDetectionStrategy, Component, OnInit, ViewChild} from '@angular/core';
+import {CategorieDto, FinanceApiService,} from '../../../api/service/personal-finance-api.service';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogBoxComponent} from '../../../shared/components/dialog-box/dialog-box.component';
+import {MatTable} from '@angular/material/table';
+import {AuthService} from '../../../shared/services/auth.service';
+import {CategoryStoreService} from '../../store/category-store.service';
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
   styleUrls: ['./category-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryListComponent implements OnInit {
   displayedColumns: string[] = ['name', 'share', 'commands'];
-  dataSource: CategorieDto[];
+  categories$: Observable<CategorieDto[]> = this._cStore.categories$;
 
-  @ViewChild(MatTable, { static: true }) table: MatTable<any>;
+  @ViewChild(MatTable, {static: true}) table: MatTable<any>;
 
   constructor(
     private apiService: FinanceApiService,
     public dialog: MatDialog,
-    private authService: AuthService
-  ) {}
-
-  ngOnInit(): void {
-    this.apiService.getAllCategories().subscribe((res) => {
-      if (res) {
-        this.dataSource = res;
-      }
-    });
+    private authService: AuthService,
+    private _cStore: CategoryStoreService
+  ) {
   }
 
-  openDialog(action, obj) {
+  ngOnInit(): void {
+  }
+
+  openDialog(action, obj): void {
     obj.action = action;
     const dialogRef = this.dialog.open(DialogBoxComponent, {
       width: '250px',
@@ -41,47 +38,28 @@ export class CategoryListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.event == 'Add') {
+      if (result.event === 'Add') {
         this.addRowData(result.data);
-      } else if (result.event == 'Update') {
+      } else if (result.event === 'Update') {
         this.updateRowData(result.data);
-      } else if (result.event == 'Delete') {
+      } else if (result.event === 'Delete') {
         this.deleteRowData(result.data);
       }
     });
   }
 
   // TODO add userId to category
-  addRowData(row_obj) {
+  addRowData(row_obj): void {
     const category = row_obj as CategorieDto;
     category.userId = this.authService.decodedToken.nameid;
-    this.dataSource.push(category);
-    this.apiService.postCategory(category).subscribe((value) => {
-      if (value) {
-        this.table.renderRows();
-      }
-    });
+    this._cStore.add(category);
   }
 
-  updateRowData(row_obj) {
-    console.log(row_obj);
-    this.apiService.putCategory(row_obj.id, row_obj).subscribe((value) => {
-      if (value) {
-        this.dataSource = this.dataSource.filter((value, key) => {
-          if (value.id == row_obj.id) {
-            value.name = row_obj.name;
-            value.isShared = row_obj.isShared;
-          }
-          return true;
-        });
-      }
-    });
+  updateRowData(row_obj): void {
+    this._cStore.update(row_obj);
   }
 
-  deleteRowData(row_obj) {
-    this.apiService.deleteCategory(row_obj).subscribe((value) => {});
-    this.dataSource = this.dataSource.filter((value, key) => {
-      return value.id != row_obj.id;
-    });
+  deleteRowData(row_obj): void {
+    this._cStore.remove(row_obj);
   }
 }

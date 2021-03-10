@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
-import { AlertService } from '../../../shared/services/alert.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -17,7 +17,7 @@ export class RegisterComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private _alert: AlertService
+    private _alert: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
 
   register(): void {
     this.authService.register(this.registerForm.value).subscribe((res) => {
-      this._alert.success('Erfolgreich registriert!');
+      this._alert.showSuccess('Erfolgreich registriert!');
       this.router.navigate(['/login']);
     });
   }

@@ -86,6 +86,9 @@
       true,
       "call-signature"
     ],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "typedef-whitespace": {
       "options": [
         {

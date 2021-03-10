@@ -65,7 +65,7 @@ export class ChartComponent implements OnInit, OnChanges {
   private lineChart(): void {
     this.store.transaction$.subscribe(transactions => {
       transactions.map(transaction => {
-        if (transaction.transactionType === TransactionTypeEnum.Income) {
+        if (transaction.transactionType === TransactionTypeEnum.Einnahmen) {
           if (this.barChartData[0].data.length > 0) {
             this.barChartData[0].data.push(
               (this.barChartData[0]?.data.slice(-1)[0] as number) +
@@ -79,7 +79,7 @@ export class ChartComponent implements OnInit, OnChanges {
           );
         }
 
-        if (transaction.transactionType === TransactionTypeEnum.Expense) {
+        if (transaction.transactionType === TransactionTypeEnum.Ausgaben) {
           if (this.barChartData[1].data.length > 0) {
             this.barChartData[1].data.push(
               (this.barChartData[1]?.data.slice(-1)[0] as number) +

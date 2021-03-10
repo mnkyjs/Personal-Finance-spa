@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
-import { AlertService } from '../../../shared/services/alert.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private _alert: AlertService
+    private _alert: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
           });
           returnUrl = returnUrl.substring(0, returnUrl.indexOf('?'));
         }
-        this._alert.success('Angemeldet!');
+        this._alert.showSuccess('Angemeldet!');
         this.router.navigate([returnUrl], { queryParams });
       });
     });

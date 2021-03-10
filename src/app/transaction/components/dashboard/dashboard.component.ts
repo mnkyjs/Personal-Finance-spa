@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {
   CategorieDto,
@@ -6,21 +6,23 @@ import {
   TransactionDto,
   TransactionTypeEnum,
 } from '../../../api/service/personal-finance-api.service';
-import {AlertService} from '../../../shared/services/alert.service';
 import {ApiExtensionService} from '../../../api/service/api-extension.service';
-import {Observable} from 'rxjs';
 import {TransactionStoreService} from '../../store/transaction-store.service';
+import {NotificationService} from '../../../shared/services/notification.service';
+import {CategoryStoreService} from '../../../category/store/category-store.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit {
   transactionInputForm: FormGroup;
   selectInputForm: FormGroup;
   categories: CategorieDto[];
-  transactions$ = this.tStore.transaction$;
+  transactions$ = this._tStore.transaction$;
+  categories$ = this._cStore.categories$;
   totalBalance = 0;
 
   startDateForView = new Date(new Date().getFullYear(), 0, 1);
@@ -37,10 +39,11 @@ export class DashboardComponent implements OnInit {
   transactionTypes = TransactionTypeEnum;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private financeApiService: ApiExtensionService,
-    private alertService: AlertService,
-    private tStore: TransactionStoreService,
+    private _formBuilder: FormBuilder,
+    private _financeApiService: ApiExtensionService,
+    private _notificationService: NotificationService,
+    private _tStore: TransactionStoreService,
+    private _cStore: CategoryStoreService
   ) {
     this.transactions$.subscribe(res => {
       this.totalBalance = 0;
@@ -51,7 +54,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.transactionInputForm = this.formBuilder.group({
+    this.transactionInputForm = this._formBuilder.group({
       transactionType: ['', Validators.required],
       categoryId: ['', Validators.required],
       value: ['', Validators.required],
@@ -59,22 +62,16 @@ export class DashboardComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', null],
     });
-    this.selectInputForm = this.formBuilder.group({
+    this.selectInputForm = this._formBuilder.group({
       start: [this.startDateForView, Validators.required],
       end: [this.endDayForView, Validators.required],
-    });
-
-    this.financeApiService.getAllCategories().subscribe((value) => {
-      if (value) {
-        this.categories = value;
-      }
     });
   }
 
   deleteTransaction(transaction: TransactionDto): void {
     if (confirm(`${transaction.title} wirklich löschen?`)) {
-      this.tStore.removeTransaction(transaction);
-      this.alertService.success('Eintrag gelöscht');
+      this._tStore.removeTransaction(transaction);
+      this._notificationService.showSuccess('Eintrag gelöscht');
     }
   }
 
@@ -82,11 +79,11 @@ export class DashboardComponent implements OnInit {
     const transactionEntity = {
       ...this.transactionInputForm.value,
     } as TransactionDto;
-    if (transactionEntity.transactionType === TransactionTypeEnum.Expense) {
+    if (transactionEntity.transactionType === TransactionTypeEnum.Ausgaben) {
       transactionEntity.value *= -1;
     }
-    this.tStore.addTransactions(transactionEntity);
-    this.alertService.success('Eintrag gespeichert');
+    this._tStore.addTransactions(transactionEntity);
+    this._notificationService.showSuccess('Eintrag gespeichert');
     this.resetForm();
   }
 
@@ -96,7 +93,7 @@ export class DashboardComponent implements OnInit {
 
       this.endDayForView = this.selectInputForm.get('end').value;
 
-      this.financeApiService
+      this._financeApiService
         .getAllTransactionsInDateRange(
           {
             startDate: this.startDateForView,

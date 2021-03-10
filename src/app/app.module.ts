@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {LOCALE_ID, NgModule} from '@angular/core';
+import {ErrorHandler, LOCALE_ID, NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -14,7 +14,8 @@ import {httpInterceptors} from './shared/interceptors/httpInterceptors';
 import {MainNavigationComponent} from './main-navigation/main-navigation.component';
 import localeDe from '@angular/common/locales/de';
 import {registerLocaleData} from '@angular/common';
-import { FooterComponent } from './footer/footer.component';
+import {FooterComponent} from './footer/footer.component';
+import {GlobalErrorHandler} from './shared/handlers/global-error-handler';
 
 registerLocaleData(localeDe);
 
@@ -34,6 +35,12 @@ const modules = [
   }),
 ];
 
+const provider = [
+  {provide: ErrorHandler, useClass: GlobalErrorHandler},
+  {provide: API_BASE_URL, useValue: environment.apiUrl},
+  {provide: LOCALE_ID, useValue: 'de'}
+];
+
 export function tokenGetter(): string {
   return localStorage.getItem('token');
 }
@@ -43,8 +50,7 @@ export function tokenGetter(): string {
   imports: [...modules],
   providers: [
     ...httpInterceptors,
-    {provide: API_BASE_URL, useValue: environment.apiUrl},
-    {provide: LOCALE_ID, useValue: 'de'}
+    ...provider,
   ],
   bootstrap: [AppComponent],
 })
