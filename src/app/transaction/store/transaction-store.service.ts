@@ -52,7 +52,7 @@ export class TransactionStoreService extends StateService<TransactionState> {
   }
 
   addTransactions(transaction: TransactionDto): void {
-    this.apiService.postTransaction(transaction).subscribe((data) => {
+    this.apiService.createTransaction(transaction).subscribe((data) => {
       if (data) {
         this.setState({transactions: [...this.state.transactions, data]});
       }
@@ -70,7 +70,7 @@ export class TransactionStoreService extends StateService<TransactionState> {
   }
 
   updateTransaction(transaction: TransactionDto): void {
-    this.apiService.putTransaction(transaction.id, transaction).subscribe((data) => {
+    this.apiService.updateTransaction(transaction.id, transaction).subscribe((data) => {
       if (data) {
         this.setState({
           transactions: this.state.transactions.map((item) => (item.id === transaction.id ? data : item)),

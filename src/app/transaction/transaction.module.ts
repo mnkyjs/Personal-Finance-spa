@@ -7,6 +7,7 @@ import {MaterialModule} from '../shared/material.module';
 import {SharedModule} from '../shared/shared.module';
 import {ChartComponent} from './components/chart/chart.component';
 import {TransactionComponent} from './transaction.component';
+import { InputComponent } from './components/input/input.component';
 
 const modules = [
   CommonModule,
@@ -17,7 +18,7 @@ const modules = [
 ];
 
 @NgModule({
-  declarations: [DashboardComponent, ChartComponent, TransactionComponent],
+  declarations: [DashboardComponent, ChartComponent, TransactionComponent, InputComponent],
   imports: [...modules],
   exports: [ChartComponent],
 })

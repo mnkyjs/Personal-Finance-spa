@@ -44,7 +44,7 @@ export class CategoryStoreService extends StateService<CategoryState> {
   }
 
   add(entity: CategorieDto): void {
-    this._apiService.postCategory(entity).subscribe((data) => {
+    this._apiService.createCategory(entity).subscribe((data) => {
       if (data) {
         this.setState({categories: [...this.state.categories, data]});
         this._notification.showSuccess('Gespeichert');
@@ -67,7 +67,7 @@ export class CategoryStoreService extends StateService<CategoryState> {
   }
 
   update(entity: CategorieDto): void {
-    this._apiService.putCategory(entity.id, entity).subscribe((data) => {
+    this._apiService.updateCategory(entity.id, entity).subscribe((data) => {
       if (data) {
         this.setState({
           categories: this.state.categories.map((item) => (item.id === entity.id ? data : item)),

@@ -18,13 +18,12 @@ import {CategoryStoreService} from '../../../category/store/category-store.servi
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit {
-  transactionInputForm: FormGroup;
   selectInputForm: FormGroup;
   categories: CategorieDto[];
   transactions$ = this._tStore.transaction$;
-  categories$ = this._cStore.categories$;
   totalBalance = 0;
-
+  keys = Object.keys;
+  transactionTypes = TransactionTypeEnum;
   startDateForView = new Date(new Date().getFullYear(), 0, 1);
   endDayForView = new Date(
     new Date().getFullYear(),
@@ -35,15 +34,13 @@ export class DashboardComponent implements OnInit {
   availableMonths = [] as number[];
   availableYears = [] as number[];
 
-  keys = Object.keys;
-  transactionTypes = TransactionTypeEnum;
 
   constructor(
-    private _formBuilder: FormBuilder,
     private _financeApiService: ApiExtensionService,
     private _notificationService: NotificationService,
     private _tStore: TransactionStoreService,
-    private _cStore: CategoryStoreService
+    private _cStore: CategoryStoreService,
+    private _formBuilder: FormBuilder
   ) {
     this.transactions$.subscribe(res => {
       this.totalBalance = 0;
@@ -54,14 +51,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.transactionInputForm = this._formBuilder.group({
-      transactionType: ['', Validators.required],
-      categoryId: ['', Validators.required],
-      value: ['', Validators.required],
-      date: ['', Validators.required],
-      title: ['', Validators.required],
-      description: ['', null],
-    });
     this.selectInputForm = this._formBuilder.group({
       start: [this.startDateForView, Validators.required],
       end: [this.endDayForView, Validators.required],
@@ -75,17 +64,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  submit(): void {
-    const transactionEntity = {
-      ...this.transactionInputForm.value,
-    } as TransactionDto;
-    if (transactionEntity.transactionType === TransactionTypeEnum.Ausgaben) {
-      transactionEntity.value *= -1;
-    }
-    this._tStore.addTransactions(transactionEntity);
-    this._notificationService.showSuccess('Eintrag gespeichert');
-    this.resetForm();
-  }
 
   updateCalc(event): void {
     if (event.value !== null) {
@@ -114,9 +92,6 @@ export class DashboardComponent implements OnInit {
     return this.categories?.find(item => item.id === id).name;
   }
 
-  resetForm(): void {
-    this.transactionInputForm.reset();
-  }
 
   trackByFn(item): number {
     return item.id;
