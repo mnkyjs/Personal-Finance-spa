@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
-import {InputComponent} from "../transaction/components/input/input.component";
+import {MatDialog} from '@angular/material/dialog';
+import {InputComponent} from '../transaction/components/input/input.component';
 
 @Component({
   selector: 'app-footer',
@@ -16,8 +16,6 @@ export class FooterComponent implements OnInit {
   }
 
   openInputDialog(): void {
-    const dialogRef = this.dialog.open(InputComponent, {
-      width: '50%',
-    });
+    const dialogRef = this.dialog.open(InputComponent, {});
   }
 }

@@ -14,6 +14,16 @@
         </mat-form-field>
 
         <mat-form-field appearance="fill">
+          <mat-label>Titel</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="title"
+            placeholder="Amazon, Depot, etc."
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
           <mat-label>Betrag</mat-label>
           <input
             type="number"
@@ -23,17 +33,6 @@
           />
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
-          <mat-label>Titel</mat-label>
-          <input
-            type="text"
-            matInput
-            formControlName="title"
-            placeholder="Amazon, Depot, etc."
-          />
-        </mat-form-field>
-      </div>
-      <div class="column">
         <mat-form-field appearance="fill">
           <mat-label>Wähle ein Type aus</mat-label>
           <mat-select formControlName="transactionType">
