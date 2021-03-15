@@ -1,17 +1,17 @@
 <div class="dashboard__wrapper">
   <div class="dashboard__items">
-    <mat-card id="dashboard__input__area" class="example-card">
+    <mat-card id="dashboard__input__area">
       <mat-card-header>
         <mat-card-title>Ausgaben Tracker</mat-card-title>
         <mat-card-subtitle>Powered by mnky</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <h2 style="text-align: center" *ngIf="this.totalBalance">
-          {{ this.totalBalance }} €
+        <h2 class="text-center" *ngIf="this.totalBalance">
+          {{ this.totalBalance | number:'1.2-2' }} €
         </h2>
         <form [formGroup]="selectInputForm">
           <div class="row center">
-            <mat-form-field class="w50" appearance="fill">
+            <mat-form-field class="w75" appearance="fill">
               <mat-label>Enter a date range</mat-label>
               <mat-date-range-input [rangePicker]="picker">
                 <input
@@ -39,40 +39,37 @@
         <br/>
 
         <mat-card-actions id="transaction__list">
-          <ng-container
-            *ngFor="let transaction of transactions$ | async; trackBy: trackByFn"
-          >
-            <div class="transaction row">
-              <mat-icon
-                style="font-size: 3vh; display: table"
-                [ngStyle]="{
+          <cdk-virtual-scroll-viewport itemSize="50" class="scroll-section">
+            <div *cdkVirtualFor="let transaction of transactions" class="example-item">
+              <div (click)="openBottomSheet(transaction)" class="transaction row">
+                <mat-icon
+                  style="font-size: 1.5rem; display: table"
+                  [ngStyle]="{
                   color:
                     transaction.transactionType === transactionTypes.Einnahmen
                       ? '#66BB6A'
                       : '#ef5350'
                 }"
-              >
-                monetization_on
-              </mat-icon>
-              <div style="margin: 5px" class="column">
-                <p>{{ transaction.title }} - {{getCategoryName(transaction.categoryId)}}</p>
-                <p>
-                  {{ transaction.value }} € -
-                  {{ transaction.date | date}}
-                </p>
+                >
+                  monetization_on
+                </mat-icon>
+                <div class="column five-px-margin">
+                  <div class="transaction-item">
+                    <p id="title">{{ transaction.title }}</p>
+
+                    <p id="value">{{ transaction.value }} €</p>
+                  </div>
+
+                  <p id="category">
+                    {{getCategoryName(transaction.categoryId)}} - {{transaction.date | date}}
+                  </p>
+                </div>
               </div>
-              <button
-                class="delete__btn"
-                mat-mini-fab
-                (click)="deleteTransaction(transaction)"
-                aria-label="Example icon button with a menu icon"
-              >
-                <mat-icon>delete</mat-icon>
-              </button>
             </div>
-          </ng-container>
+          </cdk-virtual-scroll-viewport>
         </mat-card-actions>
       </mat-card-content>
     </mat-card>
   </div>
+
 </div>

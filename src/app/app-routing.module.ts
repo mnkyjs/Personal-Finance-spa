@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {AuthGuard} from './shared/guards/auth.guard';
 import {MainNavigationComponent} from './main-navigation/main-navigation.component';
-import {TransactionComponent} from './transaction/transaction.component';
 
 const routes: Routes = [
   {

@@ -18,6 +18,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 
     let message;
     let stackTrace;
+    console.log(JSON.stringify(error))
 
 
     if (error instanceof HttpErrorResponse) {

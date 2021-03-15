@@ -14,6 +14,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {ScrollingModule} from '@angular/cdk/scrolling';
+import {MatListModule} from "@angular/material/list";
+import {MatBottomSheetModule} from "@angular/material/bottom-sheet";
+
 
 const modules = [
   CommonModule,
@@ -31,6 +35,9 @@ const modules = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatSnackBarModule,
+  MatListModule,
+  MatBottomSheetModule,
+  ScrollingModule
 ];
 
 @NgModule({

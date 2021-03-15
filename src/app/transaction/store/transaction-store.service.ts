@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {DateRangeDto, TransactionDto} from '../../api/service/personal-finance-api.service';
 import {ApiExtensionService} from '../../api/service/api-extension.service';
 import {StateService} from '../../shared/services/state.service';
+import {NotificationService} from "../../shared/services/notification.service";
 
 interface TransactionState {
   transactions: TransactionDto[];
@@ -35,12 +36,24 @@ export class TransactionStoreService extends StateService<TransactionState> {
     0
   );
 
-  constructor(private apiService: ApiExtensionService) {
+  constructor(private apiService: ApiExtensionService, private _alert: NotificationService) {
     super(initState);
     this.loadTransactions({
       startDate: this.startDateForView,
       endDate: this.endDayForView,
     } as DateRangeDto);
+  }
+
+  selectTransaction(transaction: TransactionDto): void {
+    this.setState({
+      selectedTransactionId: transaction.id
+    });
+  }
+
+  unSelectTransaction(): void {
+    this.setState({
+      selectedTransactionId: undefined
+    });
   }
 
   getCurrentState(): TransactionState {
@@ -55,6 +68,7 @@ export class TransactionStoreService extends StateService<TransactionState> {
     this.apiService.createTransaction(transaction).subscribe((data) => {
       if (data) {
         this.setState({transactions: [...this.state.transactions, data]});
+        this._alert.showSuccess('Eintrag gespeichert');
       }
     });
   }
@@ -85,6 +99,7 @@ export class TransactionStoreService extends StateService<TransactionState> {
         selectedTransactionId: undefined,
         transactions: this.state.transactions.filter((item) => item.id !== transaction.id)
       });
+      this._alert.showSuccess('Eintrag gelöscht');
     });
   }
 

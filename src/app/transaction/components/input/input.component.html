@@ -68,23 +68,25 @@
         </mat-form-field>
       </div>
     </div>
-    <button
-      class="btn__action"
-      mat-raised-button
-      color="primary"
-      type="submit"
-      [disabled]="!transactionInputForm.valid"
-    >
-      Speichern
-    </button>
-    <button
-      class="btn__action"
-      mat-raised-button
-      color="accent"
-      type="button"
-      (click)="resetForm()"
-    >
-      Reset
-    </button>
+    <div class="input__btn__group">
+      <button
+        class="btn__action"
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!transactionInputForm.valid"
+      >
+        Speichern
+      </button>
+      <button
+        class="btn__action"
+        mat-raised-button
+        color="accent"
+        type="button"
+        (click)="resetForm()"
+      >
+        Reset
+      </button>
+    </div>
   </form>
 </div>

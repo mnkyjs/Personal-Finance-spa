@@ -41,7 +41,6 @@ export class InputComponent implements OnInit {
       transactionEntity.value *= -1;
     }
     this._tStore.addTransactions(transactionEntity);
-    this._notificationService.showSuccess('Eintrag gespeichert');
     this.resetForm();
   }
 

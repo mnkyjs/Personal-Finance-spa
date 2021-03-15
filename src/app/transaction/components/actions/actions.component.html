@@ -1,0 +1,22 @@
+<ng-container *ngIf="transaction$ | async as transaction">
+  <mat-nav-list>
+    <div class="action__item">
+      <mat-icon color="primary">info</mat-icon>
+      <mat-list-item role="listitem" (click)="showDetails()">
+        <span mat-line>Details</span>
+      </mat-list-item>
+    </div>
+    <div class="action__item">
+      <mat-icon color="accent">edit</mat-icon>
+      <mat-list-item role="listitem" (click)="edit()">
+        <span mat-line>Bearbeiten</span>
+      </mat-list-item>
+    </div>
+    <div class="action__item">
+      <mat-icon color="warn">delete</mat-icon>
+      <mat-list-item role="listitem" (click)="delete(transaction)">
+        <span mat-line>Löschen</span>
+      </mat-list-item>
+    </div>
+  </mat-nav-list>
+</ng-container>

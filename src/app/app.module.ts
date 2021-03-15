@@ -16,6 +16,7 @@ import localeDe from '@angular/common/locales/de';
 import {registerLocaleData} from '@angular/common';
 import {FooterComponent} from './footer/footer.component';
 import {GlobalErrorHandler} from './shared/handlers/global-error-handler';
+import {MAT_DATE_LOCALE} from "@angular/material/core";
 
 registerLocaleData(localeDe);
 
@@ -38,7 +39,8 @@ const modules = [
 const provider = [
   {provide: ErrorHandler, useClass: GlobalErrorHandler},
   {provide: API_BASE_URL, useValue: environment.apiUrl},
-  {provide: LOCALE_ID, useValue: 'de'}
+  {provide: LOCALE_ID, useValue: 'de'},
+  { provide: MAT_DATE_LOCALE, useValue: 'de' }
 ];
 
 export function tokenGetter(): string {
