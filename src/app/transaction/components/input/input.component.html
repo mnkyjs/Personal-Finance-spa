@@ -1,92 +1,65 @@
 <div class="main__input">
-  <form [formGroup]="transactionInputForm" (ngSubmit)="submit()">
-    <div class="row">
-      <div class="column">
-        <mat-form-field appearance="fill">
-          <mat-label>Wähle eine Kategorie</mat-label>
-          <mat-select formControlName="categoryId">
-            <mat-option
-              *ngFor="let item of (categories$ | async)"
-              [value]="item.id"
-            >{{ item.name }}</mat-option
+    <form [formGroup]="transactionInputForm" (ngSubmit)="submit()">
+        <div class="row">
+            <div class="column">
+                <mat-form-field appearance="fill">
+                    <mat-label>Wähle eine Kategorie</mat-label>
+                    <mat-select formControlName="categoryId">
+                        <mat-option *ngFor="let item of categories$ | async" [value]="item.id">{{
+                            item.name
+                        }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Titel</mat-label>
+                    <input type="text" matInput formControlName="title" placeholder="Amazon, Depot, etc." />
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Betrag</mat-label>
+                    <input type="number" matInput formControlName="value" placeholder="Bsp.: 10,99" />
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Wähle ein Type aus</mat-label>
+                    <mat-select formControlName="transactionType">
+                        <mat-option *ngFor="let transaction of keys(transactionTypes)" [value]="transaction">{{
+                            transaction
+                        }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Datum</mat-label>
+                    <input matInput formControlName="date" [matDatepicker]="transactionDate" />
+                    <mat-datepicker-toggle matSuffix [for]="transactionDate"></mat-datepicker-toggle>
+                    <mat-datepicker #transactionDate></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Beschreibung</mat-label>
+                    <textarea
+                        matInput
+                        formControlName="description"
+                        placeholder="Ausgabe wurde wegen xyz getätigt."
+                    ></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="input__btn__group">
+            <button
+                class="btn__action"
+                mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="!transactionInputForm.valid"
             >
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Titel</mat-label>
-          <input
-            type="text"
-            matInput
-            formControlName="title"
-            placeholder="Amazon, Depot, etc."
-          />
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Betrag</mat-label>
-          <input
-            type="number"
-            matInput
-            formControlName="value"
-            placeholder="Bsp.: 10,99"
-          />
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Wähle ein Type aus</mat-label>
-          <mat-select formControlName="transactionType">
-            <mat-option
-              *ngFor="let transaction of keys(transactionTypes)"
-              [value]="transaction"
-            >{{ transaction }}</mat-option
-            >
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-          <mat-label>Datum</mat-label>
-          <input
-            matInput
-            formControlName="date"
-            [matDatepicker]="transactionDate"
-          />
-          <mat-datepicker-toggle
-            matSuffix
-            [for]="transactionDate"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #transactionDate></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field class="full-width">
-          <mat-label>Beschreibung</mat-label>
-          <textarea
-            matInput
-            formControlName="description"
-            placeholder="Ausgabe wurde wegen xyz getätigt."
-          ></textarea>
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="input__btn__group">
-      <button
-        class="btn__action"
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!transactionInputForm.valid"
-      >
-        Speichern
-      </button>
-      <button
-        class="btn__action"
-        mat-raised-button
-        color="accent"
-        type="button"
-        (click)="resetForm()"
-      >
-        Reset
-      </button>
-    </div>
-  </form>
+                Speichern
+            </button>
+            <button class="btn__action" mat-raised-button color="accent" type="button" (click)="resetForm()">
+                Reset
+            </button>
+        </div>
+    </form>
 </div>

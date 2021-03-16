@@ -1,33 +1,32 @@
-<h1 mat-dialog-title>
-  Row Action :: <strong>{{ action }}</strong>
-</h1>
-<div style="height: 9vh" mat-dialog-content>
-  <mat-form-field *ngIf="action != 'Delete'; else elseTemplate">
-    <input
-      name="name"
-      placeholder="{{ action }} Name"
-      matInput
-      [(ngModel)]="localData.name"
-    />
-  </mat-form-field>
+<h1 mat-dialog-title></h1>
+<div mat-dialog-content>
+    <ng-container *ngIf="action === 'dateRange'">
+        <form [formGroup]="selectInputForm">
+            <div class="row center">
+                <mat-form-field class="w75" appearance="fill">
+                    <mat-label>Enter a date range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate formControlName="start" placeholder="Start date" />
+                        <input matEndDate formControlName="end" placeholder="End date" />
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                </mat-form-field>
+            </div>
+        </form>
+    </ng-container>
 
-  <ng-container *ngIf="action != 'Delete'">
-    <mat-checkbox
-      name="checkbox"
-      class="example-margin"
-      [(ngModel)]="localData.isShared"
-      >Share this categorie?</mat-checkbox
-    >
-  </ng-container>
+    <ng-container *ngIf="action == 'Add' || action == 'Update'">
+        <mat-checkbox name="checkbox" class="example-margin" [(ngModel)]="localData.isShared"
+            >Share this categorie?</mat-checkbox
+        >
+    </ng-container>
 
-  <ng-template #elseTemplate>
-    Sure to delete <b>{{ localData.name }}</b
-    >?
-  </ng-template>
+    <ng-container *ngIf="action == 'Delete'">
+        Sicher das <b>{{ localData.name }}</b> gelöscht werden soll?
+    </ng-container>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="doAction()">{{ action }}</button>
-  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">
-    Cancel
-  </button>
+    <button mat-button (click)="doAction()">Speichern</button>
+    <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Abbruch</button>
 </div>

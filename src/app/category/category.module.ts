@@ -6,15 +6,8 @@ import { CategoryListComponent } from './components/category-list/category-list.
 import { MaterialModule } from '../shared/material.module';
 import { SharedModule } from '../shared/shared.module';
 
-const modules = [
-  CommonModule,
-  CategoryRoutingModule,
-  MaterialModule,
-  SharedModule,
-];
-
 @NgModule({
-  declarations: [CategoryListComponent],
-  imports: [...modules],
+    declarations: [CategoryListComponent],
+    imports: [CommonModule, CategoryRoutingModule, MaterialModule, SharedModule],
 })
 export class CategoryModule {}

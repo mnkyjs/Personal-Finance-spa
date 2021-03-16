@@ -2,40 +2,49 @@
 
 html,
 body {
-  height: 100%;
+    height: 100%;
 }
 
 body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+    margin: 0;
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .center {
-  justify-content: center;
-  align-items: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .text-center {
-  text-align: center;
+    text-align: center;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.no-padding-and-margin {
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .column {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .w50 {
-  width: 50%;
+    width: 50%;
 }
 
 .w75 {
-  width: 75%;
+    width: 75%;
 }

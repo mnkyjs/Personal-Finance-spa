@@ -1,23 +1,22 @@
 #add__btn {
-  margin: 15px;
+    margin: 15px;
 }
 
 .container {
-  display: flex;
-  flex-direction: column;
-  width: 98vw;
+    display: flex;
+    flex-direction: column;
+    width: 98vw;
 }
 
-
 .cat__table {
-  margin: 10px 0;
+    margin: 10px 0;
 
-  .command__btn {
-    margin: 5px;
-  }
+    .command__btn {
+        margin: 5px;
+    }
 
-  #commands {
-    display: flex;
-    justify-content: flex-end;
-  }
+    #commands {
+        display: flex;
+        justify-content: flex-end;
+    }
 }

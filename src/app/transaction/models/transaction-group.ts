@@ -1,6 +1,6 @@
-import {TransactionDto} from '../../api/service/personal-finance-api.service';
+import { TransactionDto } from '../../api/service/personal-finance-api.service';
 
 export interface TransactionGroup {
-  date: string;
-  transactions: TransactionDto[];
+    date: string;
+    transactions: TransactionDto[];
 }

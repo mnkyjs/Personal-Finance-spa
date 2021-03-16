@@ -1,23 +1,22 @@
 <div class="container all-wrap">
-  <div class="page-wrap">
-    <header class="navbar">
-      <mat-toolbar id="toolbar">
-        <div>
-          <p id="greet">Hallo,</p>
-          <p id="name">{{userName | titlecase}}</p>
+    <div class="page-wrap">
+        <header class="navbar">
+            <mat-toolbar id="toolbar">
+                <div>
+                    <p id="greet">Hallo,</p>
+                    <p id="name">{{ userName | titlecase }}</p>
+                </div>
+                <button mat-mini-fab (click)="logout()" color="primary">
+                    <mat-icon>logout</mat-icon>
+                </button>
+            </mat-toolbar>
+        </header>
+
+        <main class="content">
+            <router-outlet></router-outlet>
+        </main>
+        <div class="footer">
+            <app-footer></app-footer>
         </div>
-        <button mat-mini-fab (click)="logout()" color="primary">
-          <mat-icon>logout</mat-icon>
-        </button>
-
-      </mat-toolbar>
-    </header>
-
-    <main class="content">
-      <router-outlet></router-outlet>
-    </main>
-    <div class="footer">
-      <app-footer></app-footer>
     </div>
-  </div>
 </div>

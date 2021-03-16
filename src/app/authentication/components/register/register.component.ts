@@ -5,35 +5,35 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  hide = true;
-  registerForm: FormGroup;
+    hide = true;
+    registerForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router,
-    private _alert: NotificationService
-  ) {}
+    constructor(
+        private _formBuilder: FormBuilder,
+        private _authService: AuthService,
+        private _router: Router,
+        private _notificationService: NotificationService
+    ) {}
 
-  ngOnInit(): void {
-    this.registerForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      email: ['', [Validators.email, Validators.required]],
-    });
-  }
+    ngOnInit(): void {
+        this.registerForm = this._formBuilder.group({
+            firstName: ['', Validators.required],
+            lastName: ['', Validators.required],
+            username: ['', Validators.required],
+            password: ['', Validators.required],
+            email: ['', [Validators.email, Validators.required]],
+        });
+    }
 
-  register(): void {
-    this.authService.register(this.registerForm.value).subscribe((res) => {
-      this._alert.showSuccess('Erfolgreich registriert!');
-      this.router.navigate(['/login']);
-    });
-  }
+    register(): void {
+        this._authService.register(this.registerForm.value).subscribe((res) => {
+            this._notificationService.showSuccess('Erfolgreich registriert!');
+            this._router.navigate(['/login']);
+        });
+    }
 }

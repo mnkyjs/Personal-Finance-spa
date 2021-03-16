@@ -14,35 +14,34 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {ScrollingModule} from '@angular/cdk/scrolling';
-import {MatListModule} from "@angular/material/list";
-import {MatBottomSheetModule} from "@angular/material/bottom-sheet";
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatListModule } from '@angular/material/list';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 const modules = [
-  CommonModule,
-  MatIconModule,
-  MatFormFieldModule,
-  MatButtonModule,
-  MatInputModule,
-  MatCardModule,
-  MatTableModule,
-  MatDialogModule,
-  MatCheckboxModule,
-  MatToolbarModule,
-  MatDividerModule,
-  MatSelectModule,
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatSnackBarModule,
-  MatListModule,
-  MatBottomSheetModule,
-  ScrollingModule
+    CommonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatInputModule,
+    MatCardModule,
+    MatTableModule,
+    MatDialogModule,
+    MatCheckboxModule,
+    MatToolbarModule,
+    MatDividerModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSnackBarModule,
+    MatListModule,
+    MatBottomSheetModule,
+    ScrollingModule,
 ];
 
 @NgModule({
-  declarations: [],
-  imports: [...modules],
-  exports: [...modules],
+    declarations: [],
+    imports: [...modules],
+    exports: [...modules],
 })
 export class MaterialModule {}
